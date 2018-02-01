@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from './services/chat.service';
 import { Message } from './models/message.model';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +11,10 @@ export class AppComponent implements OnInit {
   msg:       Message;
   msgStream: Message[] = [];
 
-  constructor(
-    private chatService: ChatService,
-    private datePipe: DatePipe
-  ) {
+  constructor(private chatService: ChatService) {
     chatService.messages.subscribe(msg => {
-      msg.date = this.datePipe.transform(new Date());
-      this.msgStream.push(msg);
+      msg.date = Date.now().toString();
+      this.msgStream.unshift(msg);
     });
   }
 
@@ -31,5 +27,6 @@ export class AppComponent implements OnInit {
     this.msg.text   =  txt.value;
     this.chatService.messages.next(this.msg);
     this.msg.text = txt.value = '';
+    return false;
   }
 }
