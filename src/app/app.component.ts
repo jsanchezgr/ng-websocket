@@ -8,6 +8,7 @@ import { Message } from './models/message.model';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  author:    string;
   msg:       Message;
   msgStream: Message[] = [];
 
@@ -19,14 +20,29 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.msg = new Message();
+    this.msg    = new Message();
+    this.author = '';
   }
 
-  sendMsg(txt) {
-    this.msg.author = 'Pepito de copas';
-    this.msg.text   =  txt.value;
+  sendMsg(txt): boolean {
+    this.msg.author = this.author;
+    this.msg.text   = txt.value;
+
     this.chatService.messages.next(this.msg);
     this.msg.text = txt.value = '';
+    return false;
+  }
+
+  enterChat(author): boolean {
+    if (author.value) {
+      this.author = author.value;
+    }
+
+    return false;
+  }
+
+  leaveChat(): boolean {
+    this.author = '';
     return false;
   }
 }

@@ -2,7 +2,25 @@
 
   <h1>WebSocket</h1>
 
-  <form class="ui form">
+  <form class="ui form" id="name-form" *ngIf="!author">
+    <div class="ui three column grid">
+      <div class="two column row">
+        <div class="column">
+          <div class="ui fluid input">
+            <input type="text"
+                   #authorName
+                   name="author"
+                   placeholder="What's your name?">
+          </div>
+        </div>
+        <div class="column">
+          <button class="ui primary button" type="submit" (click)="enterChat(authorName)">Start</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form class="ui form" id="chat-form" *ngIf="author">
     <div class="ui three column grid">
       <div class="two column row">
         <div class="column">
@@ -20,8 +38,11 @@
     </div>
   </form>
 
-  <div class="ui comments">
+  <div class="ui comments" *ngIf="author">
     <h3 class="ui dividing header"> Message Stream</h3>
+    <div class="ui floating right">
+      <button class="ui negative button" (click)="leaveChat()">x</button>
+    </div>
     <div class="comment" *ngFor="let m of msgStream">
       <a class="avatar">
         <img src="https://myfragrances.net/wp-content/themes/myfragrances/images/avatar-img.jpg">
